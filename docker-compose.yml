@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: fiber_boilerplate_db
+    environment:
+      POSTGRES_DB: ${DB_NAME:-fiber_boilerplate}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app_networks
+
+  redis:
+    image: redis:7-alpine
+    container_name: fiber_boilerplate_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - app_networks
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  app_networks:
+    driver: bridge
