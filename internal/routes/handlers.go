@@ -10,7 +10,7 @@ import (
 // Handlers holds all application handlers
 type Handlers struct {
 	Auth *handlers.AuthHandler
-	//User *handlers.UserHandler
+	User *handlers.UserHandler
 	//Book *handlers.BookHandler
 
 	// Easy to add more handlers:
@@ -26,13 +26,16 @@ func NewHandlers(cfg *config.Config) *Handlers {
 
 	// Initialize services (business layer)
 	authService := services.NewAuthService(userRepo, cfg.JWT.Secret)
-	//userService := services.NewUserService(userRepo)
+	userService := services.NewUserService(userRepo)
 	//bookService := services.NewBookService(bookRepo, userRepo)
 
-	// Initialize handlers (presentation layer)
+	// Initialize handler (presentation layer)
+	authHandler := handlers.NewAuthHandler(authService)
+	userHandler := handlers.NewUserHandler(userService)
+
 	return &Handlers{
-		Auth: handlers.NewAuthHandler(authService),
-		//User: handlers.NewUserHandler(userService),
+		Auth: authHandler,
+		User: userHandler,
 		//Book: handlers.NewBookHandler(bookService),
 	}
 }

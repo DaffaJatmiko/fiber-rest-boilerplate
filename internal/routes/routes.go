@@ -21,6 +21,7 @@ func SetupRoutes(app *fiber.App, cfg *config.Config) {
 
 	// Setup route groups with handlers
 	setupAuthRoutes(api, h, cfg.JWT.Secret)
+	setupUserRoutes(api, h, cfg.JWT.Secret)
 }
 
 // setupAuthRoutes configures authentication routes
@@ -32,4 +33,13 @@ func setupAuthRoutes(api fiber.Router, h *Handlers, jwtSecret string) {
 	// Protected auth routes
 	protected := api.Group("/", middleware.AuthMiddleware(jwtSecret))
 	protected.Get("/profile", h.Auth.GetProfile)
+}
+
+// setupUserRoutes configures user routes
+func setupUserRoutes(api fiber.Router, h *Handlers, jwtSecret string) {
+	protected := api.Group("/", middleware.AuthMiddleware(jwtSecret))
+	protected.Get("/users", h.User.GetAll)
+	protected.Get("/users/:id", h.User.GetByID)
+	protected.Put("/users/:id", h.User.Update)
+	protected.Delete("/users/:id", h.User.Delete)
 }

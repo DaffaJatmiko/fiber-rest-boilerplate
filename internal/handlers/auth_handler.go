@@ -68,7 +68,7 @@ func (h *AuthHandler) Login(c *fiber.Ctx) error {
 }
 
 func (h *AuthHandler) GetProfile(c *fiber.Ctx) error {
-	userID, ok := c.Locals("userID").(uint)
+	userID, ok := c.Locals("user_id").(uint)
 	if !ok {
 		return response.BadRequest(c, "User ID not found in context")
 	}

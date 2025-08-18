@@ -8,13 +8,6 @@ import (
 	"github.com/DaffaJatmiko/fiber-rest-boilerplate/pkg/utils"
 )
 
-// UserRepositoryInterface defines what AuthService needs from repository
-type UserRepositoryInterface interface {
-	Create(user *models.User) error
-	GetByEmail(email string) (*models.User, error)
-	GetByID(id uint) (*models.User, error)
-}
-
 // AuthService handles authentication business logic
 type AuthService struct {
 	userRepo  UserRepositoryInterface

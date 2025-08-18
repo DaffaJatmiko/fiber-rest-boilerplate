@@ -36,8 +36,8 @@ func (r *UserRepository) Delete(id uint) error {
 	return database.DB.Delete(&models.User{}, id).Error
 }
 
-func (r *UserRepository) GetAll(params *utils.PaginationParams) ([]models.User, int64, error) {
-	var users []models.User
+func (r *UserRepository) GetAll(params *utils.PaginationParams) ([]*models.User, int64, error) {
+	var users []*models.User
 	var total int64
 
 	query := database.DB.Model(&models.User{})
