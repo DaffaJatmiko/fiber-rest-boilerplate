@@ -22,6 +22,7 @@ func SetupRoutes(app *fiber.App, cfg *config.Config) {
 	// Setup route groups with handlers
 	setupAuthRoutes(api, h, cfg.JWT.Secret)
 	setupUserRoutes(api, h, cfg.JWT.Secret)
+	setupBookRoutes(api, h, cfg.JWT.Secret)
 }
 
 // setupAuthRoutes configures authentication routes
@@ -42,4 +43,15 @@ func setupUserRoutes(api fiber.Router, h *Handlers, jwtSecret string) {
 	protected.Get("/users/:id", h.User.GetByID)
 	protected.Put("/users/:id", h.User.Update)
 	protected.Delete("/users/:id", h.User.Delete)
+}
+
+// setupBookRoutes configuras book routes
+func setupBookRoutes(api fiber.Router, h *Handlers, jwtSecret string) {
+	protected := api.Group("/", middleware.AuthMiddleware(jwtSecret))
+	protected.Get("/books", h.Book.GetAll)
+	protected.Get("/books/:id", h.Book.GetById)
+	protected.Post("/books", h.Book.Create)
+	protected.Put("/books/:id", h.Book.Update)
+	protected.Delete("/books/:id", h.Book.Delete)
+
 }

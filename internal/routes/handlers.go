@@ -11,7 +11,7 @@ import (
 type Handlers struct {
 	Auth *handlers.AuthHandler
 	User *handlers.UserHandler
-	//Book *handlers.BookHandler
+	Book *handlers.BookHandler
 
 	// Easy to add more handlers:
 	// Order *handlers.OrderHandler
@@ -22,20 +22,21 @@ type Handlers struct {
 func NewHandlers(cfg *config.Config) *Handlers {
 	// Initialize repositories (data layer)
 	userRepo := repositories.NewUserRepository()
-	//bookRepo := repositories.NewBookRepository()
+	bookRepo := repositories.NewBookRepository()
 
 	// Initialize services (business layer)
 	authService := services.NewAuthService(userRepo, cfg.JWT.Secret)
 	userService := services.NewUserService(userRepo)
-	//bookService := services.NewBookService(bookRepo, userRepo)
+	bookService := services.NewBookService(bookRepo)
 
 	// Initialize handler (presentation layer)
 	authHandler := handlers.NewAuthHandler(authService)
 	userHandler := handlers.NewUserHandler(userService)
+	bookHandler := handlers.NewBookHandler(bookService)
 
 	return &Handlers{
 		Auth: authHandler,
 		User: userHandler,
-		//Book: handlers.NewBookHandler(bookService),
+		Book: bookHandler,
 	}
 }

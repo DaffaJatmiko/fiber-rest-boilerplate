@@ -83,6 +83,8 @@ func ValidationFailed(c *fiber.Ctx, message string, details []ValidationError) e
 
 // Paginated response helper
 func Paginated(c *fiber.Ctx, message string, data interface{}, pagination Pagination) error {
+	// safety check for nil slices
+
 	return c.Status(fiber.StatusOK).JSON(PaginatedResponse{
 		Success:    true,
 		Message:    message,
